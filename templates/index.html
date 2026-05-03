@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fake Job Detector</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+        }
+
+        .navbar {
+            padding: 15px 30px;
+            font-size: 20px;
+            font-weight: bold;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 80px auto;
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            border-radius: 10px;
+            border: none;
+            padding: 12px;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            margin-top: 15px;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            transform: scale(1.03);
+            opacity: 0.9;
+        }
+
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .fake {
+            background: rgba(255, 75, 92, 0.2);
+            border: 1px solid #ff4b5c;
+            color: #ff4b5c;
+        }
+
+        .real {
+            background: rgba(0, 255, 157, 0.2);
+            border: 1px solid #00ff9d;
+            color: #00ff9d;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 12px;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    🚨 Fake Job Detector
+</div>
+
+<div class="container">
+    <h2>Analyze Job Posting</h2>
+    <p>Paste a job description to check whether it is legitimate or fraudulent.</p>
+
+    <form action="/predict" method="post">
+        <textarea name="job_text" placeholder="Paste job description here..."></textarea>
+        <button class="btn">Analyze</button>
+    </form>
+
+    {% if result %}
+        <div class="result-box {% if 'Fake' in result %}fake{% else %}real{% endif %}">
+            {{ result }}
+        </div>
+    {% endif %}
+</div>
+
+<div class="footer">
+    Built using NLP + XGBoost | Final Year Project
+</div>
+
+</body>
+</html>
