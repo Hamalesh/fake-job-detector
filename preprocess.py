@@ -1,6 +1,7 @@
 print("FILE RUNNING")
 
 import nltk
+nltk.data.path.append("/opt/render/nltk_data")
 import string
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
