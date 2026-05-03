@@ -4,10 +4,8 @@ import numpy as np
 import scipy.sparse
 from preprocess import preprocess_text
 import nltk
-
-nltk.download('punkt')
-nltk.download('stopwords')
-nltk.download('wordnet')
+import nltk
+nltk.data.path.append("/opt/render/nltk_data")
 
 
 app = Flask(__name__)
