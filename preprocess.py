@@ -1,14 +1,16 @@
 print("FILE RUNNING")
 
 import nltk
-nltk.data.path.append("/opt/render/nltk_data")
 import string
-from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 
 lemmatizer = WordNetLemmatizer()
-stop_words = set(stopwords.words('english'))
-
+def get_stopwords():
+    try:
+        from nltk.corpus import stopwords
+        return set(stopwords.words('english'))
+    except:
+        return set()
 def preprocess_text(text):
     text = text.lower()
     text = text.translate(str.maketrans('', '', string.punctuation))
@@ -16,7 +18,7 @@ def preprocess_text(text):
 
     processed_words = []
     for word in words:
-        if word not in stop_words:
+        if word not in stop_words():
             processed_words.append(lemmatizer.lemmatize(word))
 
     return " ".join(processed_words)
