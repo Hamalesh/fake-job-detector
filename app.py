@@ -4,7 +4,6 @@ import numpy as np
 import scipy.sparse
 from preprocess import preprocess_text
 import nltk
-import nltk
 nltk.data.path.append("/opt/render/nltk_data")
 
 
