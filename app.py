@@ -3,6 +3,12 @@ import joblib
 import numpy as np
 import scipy.sparse
 from preprocess import preprocess_text
+import nltk
+
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
+
 
 app = Flask(__name__)
 
