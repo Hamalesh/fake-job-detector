@@ -17,3 +17,20 @@ def preprocess_text(text):
             processed_words.append(lemmatizer.lemmatize(word))
 
     return " ".join(processed_words)
+def combine_fields(row):
+
+    fields = [
+
+        str(row.get('title', '')),
+
+        str(row.get('company_profile', '')),
+
+        str(row.get('description', '')),
+
+        str(row.get('requirements', '')),
+
+        str(row.get('benefits', ''))
+
+    ]
+
+    return " ".join(fields)
