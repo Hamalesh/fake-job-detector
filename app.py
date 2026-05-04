@@ -1,43 +1,29 @@
 from flask import Flask, request, render_template
-import joblib
-import numpy as np
-import scipy.sparse
 from preprocess import preprocess_text
-import nltk
-nltk.data.path.append("/opt/render/nltk_data")
-
 
 app = Flask(__name__)
 
-model = joblib.load('Models/xgboost_model.pkl')
-vectorizer = joblib.load('Models/tfidf_vectorizer.pkl')
-
-
-@app.route('/')
+@app.route("/")
 def home():
-    return render_template('index.html')
+    return render_template("index.html")
 
-
-@app.route('/predict', methods=['POST'])
+@app.route("/predict", methods=["POST"])
 def predict():
-    text = request.form['job_text']
+    try:
+        text = request.form.get("text", "")
 
-    clean = preprocess_text(text)
-    text_vec = vectorizer.transform([clean])
+        if not text.strip():
+            return "Please enter some text"
 
-    meta = np.array([[0, 0, 0, len(text)]])
-    X = scipy.sparse.hstack([text_vec, meta])
+        processed = preprocess_text(text)
 
-    prediction = model.predict(X)[0]
-    prob = model.predict_proba(X)[0][1]
+        # Dummy output (replace with your ML model)
+        result = "Fake Job" if "fake" in processed else "Real Job"
 
-    if prediction == 1:
-        result = f"Fake Job ❌ (Confidence: {round(prob*100,2)}%)"
-    else:
-        result = f"Legitimate Job ✅ (Confidence: {round((1-prob)*100,2)}%)"
+        return render_template("index.html", prediction=result)
 
-    return render_template('index.html', result=result)   # 👈 INSIDE FUNCTION
-import os
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+if __name__ == "__main__":
+    app.run(debug=True)
