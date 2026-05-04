@@ -2,7 +2,7 @@ print("FILE RUNNING")
 
 import nltk
 import string
-ltk.download('stopwords')
+nltk.download('stopwords')
 nltk.download('wordnet')
 nltk.download('punkt')
 nltk.download('punkt_tab')
