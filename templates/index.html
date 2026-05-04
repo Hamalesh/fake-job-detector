@@ -1,124 +1,163 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Fake Job Detector</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            color: white;
-        }
+<title>Fake Job Detector</title>
 
-        .navbar {
-            padding: 15px 30px;
-            font-size: 20px;
-            font-weight: bold;
-            background: rgba(0,0,0,0.3);
-            backdrop-filter: blur(10px);
-        }
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', sans-serif;
+    }
 
-        .container {
-            max-width: 700px;
-            margin: 80px auto;
-            background: rgba(255,255,255,0.1);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-        }
+    body {
+        height: 100vh;
+        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+    }
 
-        h2 {
-            margin-bottom: 10px;
-        }
+    .main {
+        display: flex;
+        width: 850px;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    }
 
-        p {
-            font-size: 14px;
-            opacity: 0.8;
-        }
+    /* LEFT SIDE - APP */
+    .app {
+        flex: 2;
+        padding: 30px;
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(15px);
+    }
 
-        textarea {
-            width: 100%;
-            height: 150px;
-            border-radius: 10px;
-            border: none;
-            padding: 12px;
-            font-size: 14px;
-            margin-top: 15px;
-        }
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+    }
 
-        .btn {
-            margin-top: 15px;
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 10px;
-            background: linear-gradient(90deg, #00c6ff, #0072ff);
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+    textarea {
+        width: 100%;
+        height: 140px;
+        border-radius: 10px;
+        border: none;
+        padding: 12px;
+        font-size: 14px;
+        outline: none;
+        resize: none;
+    }
 
-        .btn:hover {
-            transform: scale(1.03);
-            opacity: 0.9;
-        }
+    button {
+        width: 100%;
+        margin-top: 15px;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(90deg, #00c6ff, #0072ff);
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
 
-        .result-box {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 18px;
-            text-align: center;
-        }
+    button:hover {
+        transform: scale(1.03);
+        opacity: 0.9;
+    }
 
-        .fake {
-            background: rgba(255, 75, 92, 0.2);
-            border: 1px solid #ff4b5c;
-            color: #ff4b5c;
-        }
+    .result {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 18px;
+    }
 
-        .real {
-            background: rgba(0, 255, 157, 0.2);
-            border: 1px solid #00ff9d;
-            color: #00ff9d;
-        }
+    .fake {
+        color: #ff4d4d;
+    }
 
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            font-size: 12px;
-            opacity: 0.6;
-        }
-    </style>
+    .real {
+        color: #00ff99;
+    }
+
+    /* RIGHT SIDE - AUTHOR */
+    .author {
+        flex: 1;
+        background: linear-gradient(160deg, #111, #1a1a1a);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        border-left: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .avatar {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #00c6ff, #0072ff);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 32px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .author h2 {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+
+    .author p {
+        font-size: 13px;
+        opacity: 0.7;
+        text-align: center;
+    }
+
+</style>
 </head>
 
 <body>
 
-<div class="navbar">
-    🚨 Fake Job Detector
-</div>
+<div class="main">
 
-<div class="container">
-    <h2>Analyze Job Posting</h2>
-    <p>Paste a job description to check whether it is legitimate or fraudulent.</p>
+    <!-- APP SIDE -->
+    <div class="app">
+        <h1>Fake Job Detector</h1>
 
-    <form action="/predict" method="post">
-        <textarea name="job_text" placeholder="Paste job description here..."></textarea>
-        <button class="btn">Analyze</button>
-    </form>
+        <form action="/predict" method="POST">
+            <textarea name="text" placeholder="Paste job description here..." required></textarea>
+            <button type="submit">Analyze Job</button>
+        </form>
 
-    {% if result %}
-        <div class="result-box {% if 'Fake' in result %}fake{% else %}real{% endif %}">
-            {{ result }}
+        {% if prediction %}
+        <div class="result">
+            Result:
+            <span class="{{ 'fake' if 'Fake' in prediction else 'real' }}">
+                {{ prediction }}
+            </span>
         </div>
-    {% endif %}
-</div>
+        {% endif %}
+    </div>
 
-<div class="footer">
-    Built using NLP + XGBoost | By HDK
+    <!-- AUTHOR COLUMN -->
+    <div class="author">
+        <div class="avatar">H</div>
+        <h2>HDK</h2>
+        <p>Developer & Designer</p>
+        <p style="margin-top:10px;">Fake Job Detection System</p>
+    </div>
+
 </div>
 
 </body>
