@@ -2,21 +2,25 @@ print("FILE RUNNING")
 
 import nltk
 import string
-nltk.download('stopwords')
-nltk.download('wordnet')
-nltk.download('punkt')
-nltk.download('punkt_tab')
-
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 
-lemmatizer = WordNetLemmatizer()
-def get_stopwords():
+# Safe download (only if missing)
+def safe_nltk_download():
     try:
-        from nltk.corpus import stopwords
-        return set(stopwords.words('english'))
-    except:
-        return set()
+        nltk.data.find('tokenizers/punkt')
+        nltk.data.find('corpora/stopwords')
+        nltk.data.find('corpora/wordnet')
+    except LookupError:
+        nltk.download('punkt')
+        nltk.download('stopwords')
+        nltk.download('wordnet')
+
+safe_nltk_download()
+
+lemmatizer = WordNetLemmatizer()
+STOPWORDS = set(stopwords.words('english'))
+
 def preprocess_text(text):
     text = text.lower()
     text = text.translate(str.maketrans('', '', string.punctuation))
@@ -24,14 +28,11 @@ def preprocess_text(text):
 
     processed_words = []
     for word in words:
-        if word not in stop_words():
+        if word not in STOPWORDS:
             processed_words.append(lemmatizer.lemmatize(word))
 
     return " ".join(processed_words)
 
-if __name__ == "__main__":
-    sample = "Fake job offer high salary no experience"
-    print(preprocess_text(sample))
 def combine_fields(row):
     fields = [
         str(row.get('title', '')),
